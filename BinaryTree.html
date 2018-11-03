@@ -54,24 +54,93 @@
                 }
             }
 
-            // 提供接口，排序访问
+            // 提供接口，排序访问  中序遍历二叉树
             this.inorder = function(callback) {
                 inorderNode(root, callback)
             }
+            var preorderNode = function(node, callback) {
+                if(node != null){
+                    callback(node.key)
+                    preorderNode(node.left, callback)
+                    preorderNode(node.right, callback)
+                }
+            }
+
+            // 提供接口，【复制】二叉树 前序遍历二叉树
+            this.preorder = function(callback) {
+                preorderNode(root, callback)
+            }
+            var postorderNode = function(node, callback){
+                if(node != null){
+                    postorderNode(node.left, callback)
+                    postorderNode(node.right, callback)
+                    callback(node.key)
+                }
+            }
+
+            //提供接口， 遍历整个文件 后序遍历二叉树
+            this.postorder = function(callback) {
+                postorderNode(root, callback)
+            }
+            var getMinNode = function(node) {
+                if(node){
+                    while(node.left){
+                        node = node.left
+                    }
+                    return node.key
+                }
+                return null
+            }
+
+            //二叉树查找最小值
+            this.getMin = function() {
+                return getMinNode(root)
+            }
+            var getMaxNode = function(node) {
+                if(node){
+                    while(node.right){
+                        node = node.right
+                    }
+                    return node.key
+                }
+                return null
+            }
+
+            //二叉树查找最大值
+            this.getMax = function() {
+                return getMaxNode(root)
+            }
+            var isSearchNode = function(node, key) {
+                if(!node){
+                    return false
+                }else if(node.key > key){
+                    return isSearchNode(node.left, key)
+                }else if(node.key < key){
+                    return isSearchNode(node.right, key)
+                }else{
+                    return true
+                }
+            }
+
+            //通过二叉树查找指定的值是否存在于二叉树中
+            this.isSearch = function(key) {
+                return isSearchNode(root, key)
+            }
+            
         }
         var arr = [8, 5, 12, 15, 85, 46, 19, 2, 7]
         var binaryTree = new BinaryTree()
         arr.forEach(function(item){
             binaryTree.insert(item)
         })
+
+        // 二叉树排序生成新的二位数组
         var newArr = []
         var callback = function(value) {
-            newArr.unshift(value)
+            newArr.push(value)
         }
-        binaryTree.inorder(callback)
-        console.log(newArr)
-        
-        
+        binaryTree.postorder(callback)
+        console.log(binaryTree.isSearch(85))   
     </script>
     
 </body>
