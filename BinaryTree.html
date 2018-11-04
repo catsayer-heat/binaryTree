@@ -126,7 +126,38 @@
             this.isSearch = function(key) {
                 return isSearchNode(root, key)
             }
-            
+            var removeNode = function(node, key) {
+                if(!node){
+                    return node
+                }else if(node.key > key){
+                    node.left = removeNode(node.left, key)
+                    return node
+                }else if(node.key < key){
+                    node.right = removeNode(node.right. key)
+                    return node
+                }else if(node.key == key){
+                    if(!node.left && !node.right){
+                        node = null
+                        return node
+                    }else if(!node.left){
+                        node = node.right
+                        return node
+                    }else if(!node.right){
+                        node = node.left
+                        return node
+                    }else{
+                        node.key = getMinNode(node.right)
+                        node.right = removeNode(node.right, getMinNode(node.right))
+                        return node
+                    }
+                }
+            }
+
+            // 移除二叉树中的节点
+            this.remove = function(key) {
+                removeNode(root, key)
+                return root
+            }            
         }
         var arr = [8, 5, 12, 15, 85, 46, 19, 2, 7]
         var binaryTree = new BinaryTree()
@@ -139,8 +170,10 @@
         var callback = function(value) {
             newArr.push(value)
         }
-        binaryTree.postorder(callback)
-        console.log(binaryTree.isSearch(85))   
+        binaryTree.remove(5)
+        
+        binaryTree.inorder(callback)
+        console.log(newArr)   
     </script>
     
 </body>
